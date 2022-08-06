@@ -16,7 +16,7 @@ spring:
     username: sa
     password: password
   jpa:
-    database-platform: rg.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.H2Dialect
 info:
   application:
     name: Posterr API

@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  app:
+    image: 'posterr:latest'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+    ports:
+      - 8080:8080
+  db:
+    image: 'postgres'
+    container_name: db
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=posterr_db
+    ports:
+      - 5432:5432
+    expose:
+      - 5432

@@ -1,5 +1,6 @@
 package com.posterr.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.posterr.models.dto.CreatePostRequestDTO;
 import com.posterr.models.dto.CreatePostResponseDTO;
@@ -20,10 +21,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public CreatePostResponseDTO createPost(CreatePostRequestDTO createPostRequestDTO) {
-        log.info("[createPost] :: Creating post");
+        log.info("[createClient] :: Creating Post... Request: {}",
+                objectMapper.convertValue(createPostRequestDTO, JsonNode.class));
         Post newPost = objectMapper.convertValue(createPostRequestDTO, Post.class);
-        
-        CreatePostResponseDTO created = CreatePostResponseDTO.of(this.repository.savePost(newPost));
+
+        CreatePostResponseDTO created = CreatePostResponseDTO.of(this.repository.save(newPost).getId());
         log.info("[createPost] :: Successfully created post ID: {}", created.getId());
         return created;
 

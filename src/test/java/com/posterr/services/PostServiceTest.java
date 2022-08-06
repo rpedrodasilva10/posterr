@@ -3,6 +3,7 @@ package com.posterr.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.posterr.models.dto.CreatePostRequestDTO;
 import com.posterr.repositories.InMemoryRepository;
+import com.posterr.utils.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,7 +30,7 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.dummyPost = CreatePostRequestDTO.of("This is a simple post", 1L);
+        this.dummyPost = TestUtils.createDummyPostRequest();
         this.serviceUnderTest = new PostServiceImpl(repository, objectMapper);
     }
 

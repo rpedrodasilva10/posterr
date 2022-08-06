@@ -20,6 +20,6 @@ public class InMemoryRepository implements PostRepository {
     }
 
     private Long generateId() {
-        return ThreadLocalRandom.current().nextLong();
+        return ThreadLocalRandom.current().nextLong(1, 1000 + 1);
     }
 }

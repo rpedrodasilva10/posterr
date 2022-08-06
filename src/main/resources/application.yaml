@@ -1,15 +1,22 @@
 spring:
+  #  datasource:
+  #    url: ${DB_URL}
+  #    username: ${DB_USER}
+  #    password: ${DB_PASSWORD}
+  #    driver-class-name: ${DB_DATA_SOURCE_DRIVER}
+  #  jpa:
+  #    properties:
+  #      hibernate:
+  #        dialect: ${DB_JPA_DIALECT}
+  #    hibernate:
+  #      ddl-auto: ${DB_JPA_DDL_AUTO}
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-    driver-class-name: ${DB_DATA_SOURCE_DRIVER}
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
   jpa:
-    properties:
-      hibernate:
-        dialect: ${DB_JPA_DIALECT}
-    hibernate:
-      ddl-auto: ${DB_JPA_DDL_AUTO}
+    database-platform: rg.hibernate.dialect.H2Dialect
 info:
   application:
     name: Posterr API

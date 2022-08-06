@@ -1,17 +1,17 @@
 package com.posterr.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.posterr.models.dto.CreatePostRequestDTO;
-import com.posterr.models.dto.CreatePostResponseDTO;
+import com.posterr.repositories.InMemoryRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.time.LocalDateTime;
 
 @WebMvcTest(PostServiceImpl.class)
 @ComponentScan("com.posterr")
@@ -21,18 +21,25 @@ class PostServiceTest {
     CreatePostRequestDTO dummyPost = null;
     PostService serviceUnderTest = null;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private InMemoryRepository repository;
+
     @BeforeEach
     void setUp() {
-        CreatePostRequestDTO.of("This is a simple post", 1L, LocalDateTime.now());
-        this.serviceUnderTest = new PostServiceImpl();
+        this.dummyPost = CreatePostRequestDTO.of("This is a simple post", 1L);
+        this.serviceUnderTest = new PostServiceImpl(repository, objectMapper);
     }
 
     @Test
     @DisplayName("Should create a post successfully")
     void shouldCreatePost() {
-
         Assertions.assertDoesNotThrow(() -> {
-            CreatePostResponseDTO createdPost = this.serviceUnderTest.createPost(this.dummyPost);
+            this.serviceUnderTest.createPost(this.dummyPost);
         });
     }
+
+
 }

@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor(staticName = "of")
 public class CreatePostRequestDTO {
     @NotBlank(message = "The post content is mandatory")
-    @Size(max = 777, min = 1, message = "Post content should respect the {max} and the {min} number of characters")
+    @Size(min = 1, max = 777, message = "Post content should respect the min ({min}) and the max ({max}) number of characters")
     private String content;
 
     @NotNull(message = "User identifier (userId) is mandatory")

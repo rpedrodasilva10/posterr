@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ApiResponse {
+public class ApiErrorResponse {
 
     private Integer code;
     private String message;

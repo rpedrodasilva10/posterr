@@ -2,7 +2,7 @@ package com.posterr.services.post;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.posterr.exception.ApiException;
+import com.posterr.exception.BusinessException;
 import com.posterr.models.dto.CreatePostRequestDTO;
 import com.posterr.models.dto.CreatePostResponseDTO;
 import com.posterr.models.entities.Post;
@@ -26,13 +26,13 @@ public class PostServiceImpl implements PostService {
     private final ObjectMapper objectMapper;
 
     @Override
-    public CreatePostResponseDTO createPost(CreatePostRequestDTO createPostRequestDTO) throws ApiException {
+    public CreatePostResponseDTO createPost(CreatePostRequestDTO createPostRequestDTO) throws BusinessException {
         log.info("[createClient] :: Creating Post... Request: {}",
                 objectMapper.convertValue(createPostRequestDTO, JsonNode.class));
         Optional<User> userOpt = this.userRepository.findById(createPostRequestDTO.getUserId());
 
         if (!userOpt.isPresent()) {
-            throw new ApiException(-2, "User not found", "Could not find the user with the given id");
+            throw new BusinessException(-2, "User not found", "Could not find the user with the given id");
         }
 
         Post newPost = objectMapper.convertValue(createPostRequestDTO, Post.class);

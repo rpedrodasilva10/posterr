@@ -1,6 +1,6 @@
 package com.posterr.controllers;
 
-import com.posterr.exception.ApiException;
+import com.posterr.exception.BusinessException;
 import com.posterr.models.dto.CreatePostRequestDTO;
 import com.posterr.models.dto.CreatePostResponseDTO;
 import com.posterr.services.post.PostServiceImpl;
@@ -22,7 +22,7 @@ public class PostController {
 
     @PostMapping("/posts")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public CreatePostResponseDTO createSinglePost(@RequestBody @Valid CreatePostRequestDTO postRequestDTO) throws ApiException {
+    public CreatePostResponseDTO createSinglePost(@RequestBody @Valid CreatePostRequestDTO postRequestDTO) throws BusinessException {
         return postService.createPost(postRequestDTO);
     }
 

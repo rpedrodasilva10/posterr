@@ -15,27 +15,27 @@ import java.util.List;
 @RestControllerAdvice
 public class ApiControllerAdvice {
 
-    @ExceptionHandler(ApiException.class)
-    public ResponseEntity<ApiResponse> handleApiException(ApiException ex) {
-        return new ResponseEntity<>(ex.getApiResponse(),
-                HttpStatus.valueOf(ex.getApiResponse().getCode()));
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ApiErrorResponse> handleApiException(BusinessException ex) {
+        return new ResponseEntity<>(ex.getApiErrorResponse(),
+                HttpStatus.valueOf(ex.getApiErrorResponse().getCode()));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ApiResponse> handleMethodArgumentTypeMismatchException(
+    public ResponseEntity<ApiErrorResponse> handleMethodArgumentTypeMismatchException(
             MethodArgumentTypeMismatchException typeMismatchException) {
         String errorDescription = String
                 .format("'%s' is an invalid value for the field '%s' (%s)", typeMismatchException.getValue(),
                         typeMismatchException.getName(), typeMismatchException.getRequiredType());
-        ApiException apiException = new ApiException(
+        BusinessException businessException = new BusinessException(
                 HttpStatus.BAD_REQUEST.value(),
                 errorDescription, typeMismatchException.getLocalizedMessage(), typeMismatchException, new ArrayList<>());
-        return new ResponseEntity<>(apiException.getApiResponse(),
-                HttpStatus.valueOf(apiException.getCode()));
+        return new ResponseEntity<>(businessException.getApiErrorResponse(),
+                HttpStatus.valueOf(businessException.getCode()));
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<ApiResponse> methodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
         List<ApiError> errors = new ArrayList<>();
         result.getFieldErrors().parallelStream().forEach(fieldError ->
@@ -44,7 +44,7 @@ public class ApiControllerAdvice {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(
-                        ApiResponse.builder()
+                        ApiErrorResponse.builder()
                                 .code(-1)
                                 .message("Invalid request body!")
                                 .errors(errors)
@@ -55,11 +55,11 @@ public class ApiControllerAdvice {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse> handleException(Exception ex) {
-        ApiException apiException = new ApiException(
+    public ResponseEntity<ApiErrorResponse> handleException(Exception ex) {
+        BusinessException businessException = new BusinessException(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 ex.getMessage(), ex.getLocalizedMessage(), ex);
-        return new ResponseEntity<>(apiException.getApiResponse(),
-                HttpStatus.valueOf(apiException.getCode()));
+        return new ResponseEntity<>(businessException.getApiErrorResponse(),
+                HttpStatus.valueOf(businessException.getCode()));
     }
 }

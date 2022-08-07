@@ -9,6 +9,7 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -75,5 +76,43 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(this.dummyPost))
                 )
                 .andExpect(status().isBadRequest()).andDo(print());
+    }
+
+    @Test
+    @DisplayName("Should return 400, when content doesn't respect max size limits ")
+    @SneakyThrows
+    void shouldReturnBadRequestForContentOutsideMaxLimits() {
+        this.dummyPost.setContent(TestUtils.getContentOutSideLimit());
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post(API_BASE_PATH + "/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(this.dummyPost))
+                )
+                .andExpect(status().isBadRequest()).andDo(print());
+    }
+
+    @Test
+    @DisplayName("Should return 400, when content doesn't respect the min size limits ")
+    @SneakyThrows
+    void shouldReturnBadRequestForContentOutsideMinLimits() {
+        this.dummyPost.setContent("");
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post(API_BASE_PATH + "/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(this.dummyPost))
+                )
+                .andExpect(status().isBadRequest()).andDo(print());
+    }
+
+    @Test
+    @DisplayName("Should return 201 given valid payload")
+    @SneakyThrows
+    void shouldPassGivenValidPayload() {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post(API_BASE_PATH + "/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(this.dummyPost))
+                )
+                .andExpect(status().isCreated()).andDo(print());
     }
 }

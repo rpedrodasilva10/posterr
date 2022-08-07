@@ -6,11 +6,13 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor(staticName = "of")
 public class CreatePostRequestDTO {
     @NotBlank(message = "The post content is mandatory")
+    @Size(max = 777, min = 1, message = "Post content should respect the {max} and the {min} number of characters")
     private String content;
 
     @NotNull(message = "User identifier (userId) is mandatory")

@@ -9,25 +9,19 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@Table(name = "posts")
 @Entity
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
-public class Post {
-
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false, length = 777)
-    private String content;
+    @Column(unique = true, length = 14)
+    private String username;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private User user;
-
-    @Column(nullable = false)
-    private String type;
+    private Long postCount;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

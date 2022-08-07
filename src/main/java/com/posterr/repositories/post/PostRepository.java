@@ -1,4 +1,4 @@
-package com.posterr.repositories;
+package com.posterr.repositories.post;
 
 import com.posterr.models.entities.Post;
 

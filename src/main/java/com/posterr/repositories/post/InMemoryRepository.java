@@ -1,7 +1,8 @@
-package com.posterr.repositories;
+package com.posterr.repositories.post;
 
 import com.posterr.models.entities.Post;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -11,15 +12,17 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Repository
 @Slf4j
+@Profile("test")
 public class InMemoryRepository implements PostRepository {
     List<Post> postsTable = new ArrayList<>();
 
     @Override
     public Post save(Post post) {
         log.info("Saving using InMemory Repo");
-        Post treatedPost = new Post(generateId(), post.getContent(), post.getUserId(), post.getType(), LocalDateTime.now());
+        post.setId(generateId());
+        post.setCreatedAt(LocalDateTime.now());
         postsTable.add(post);
-        return treatedPost;
+        return post;
     }
 
     private Long generateId() {

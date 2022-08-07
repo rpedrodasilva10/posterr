@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: app
+    container_name: posterr_app
     depends_on:
       - db
     env_file:
@@ -16,7 +16,7 @@ services:
       - 8080:8080
   db:
     image: 'postgres'
-    container_name: db
+    container_name: posterr_db
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}

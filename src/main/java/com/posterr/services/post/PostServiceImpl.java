@@ -12,6 +12,7 @@ import com.posterr.repositories.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -38,10 +39,23 @@ public class PostServiceImpl implements PostService {
         Post newPost = objectMapper.convertValue(createPostRequestDTO, Post.class);
         newPost.setUser(userOpt.get());
 
+        // Checks against rules if is possible to create a new post
+        this.validatePostCreation(newPost.getUser().getId());
+
+
         CreatePostResponseDTO created = CreatePostResponseDTO.of(this.postRepository.save(newPost).getId());
         log.info("[createPost] :: Successfully created post ID: {}", created.getId());
         return created;
 
+    }
+
+    private void validatePostCreation(Long userId) throws BusinessException {
+        final int usersMaxPostsPerDay = 5;
+        Long userPostsQuantityFromToday = this.postRepository.countTodayUsersPosts(userId);
+
+        if (userPostsQuantityFromToday >= usersMaxPostsPerDay) {
+            throw new BusinessException(HttpStatus.NOT_ACCEPTABLE.value(), "User reached the limit of posts per day", "You can create " + usersMaxPostsPerDay + " posts per day");
+        }
     }
 
 }

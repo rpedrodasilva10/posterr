@@ -63,5 +63,19 @@ class PostServiceTest {
         Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.createPost(this.dummyPost));
     }
 
+    @Test
+    @DisplayName("Should throw if the maximum posts per day was already achieved")
+    void shouldFailWhenCreatingPostsWithMaxPerDayAchieved() {
+        Mockito.when(postRepository.countTodayUsersPosts(Mockito.any())).thenReturn(6L);
+        Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.createPost(this.dummyPost));
+    }
+
+    @Test
+    @DisplayName("Should pass if the maximum posts per day was not achieved")
+    void shouldFailWhenCreatingPostsWithMaxPerDayNotAchieved() {
+        Mockito.when(postRepository.countTodayUsersPosts(Mockito.any())).thenReturn(3L);
+        Assertions.assertDoesNotThrow(() -> this.serviceUnderTest.createPost(this.dummyPost));
+    }
+
 
 }

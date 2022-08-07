@@ -4,4 +4,6 @@ import com.posterr.models.entities.Post;
 
 public interface PostRepository {
     Post save(Post post);
+
+    Long countTodayUsersPosts(Long userId);
 }

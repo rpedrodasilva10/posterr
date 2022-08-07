@@ -1,6 +1,7 @@
 package com.posterr.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.posterr.exception.ApiException;
 import com.posterr.models.dto.CreatePostRequestDTO;
 import com.posterr.repositories.post.PostRepository;
 import com.posterr.repositories.user.UserRepository;
@@ -53,6 +54,13 @@ class PostServiceTest {
         Assertions.assertDoesNotThrow(() -> {
             this.serviceUnderTest.createPost(this.dummyPost);
         });
+    }
+
+    @Test
+    @DisplayName("Should throw when create a post with invalid user id")
+    void shouldFailWhenCreatePostWithInvalidUser() {
+        Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.empty());
+        Assertions.assertThrows(ApiException.class, () -> this.serviceUnderTest.createPost(this.dummyPost));
     }
 
 

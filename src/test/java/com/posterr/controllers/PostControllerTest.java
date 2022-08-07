@@ -2,6 +2,7 @@ package com.posterr.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.posterr.models.dto.CreatePostRequestDTO;
+import com.posterr.repositories.user.UserRepository;
 import com.posterr.services.post.PostServiceImpl;
 import com.posterr.utils.TestUtils;
 import lombok.SneakyThrows;
@@ -31,13 +32,16 @@ class PostControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    private final String API_BASE_PATH = "/api/v1";
+    final String API_BASE_PATH = "/api/v1";
 
     @Autowired
     ObjectMapper objectMapper;
 
     @MockBean
     private PostServiceImpl service;
+
+    @MockBean
+    private UserRepository userRepository;
 
     CreatePostRequestDTO dummyPost = null;
 

@@ -2,7 +2,7 @@ package com.posterr.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.posterr.models.dto.CreatePostRequestDTO;
-import com.posterr.services.PostServiceImpl;
+import com.posterr.services.post.PostServiceImpl;
 import com.posterr.utils.TestUtils;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
@@ -66,10 +66,10 @@ class PostControllerTest {
         }
 
         mockMvc.perform(MockMvcRequestBuilders
-                .post(API_BASE_PATH + "/posts")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(this.dummyPost))
-        )
+                        .post(API_BASE_PATH + "/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(this.dummyPost))
+                )
                 .andExpect(status().isBadRequest()).andDo(print());
     }
 }

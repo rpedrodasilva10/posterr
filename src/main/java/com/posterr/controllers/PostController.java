@@ -1,8 +1,9 @@
 package com.posterr.controllers;
 
+import com.posterr.exception.ApiException;
 import com.posterr.models.dto.CreatePostRequestDTO;
 import com.posterr.models.dto.CreatePostResponseDTO;
-import com.posterr.services.PostServiceImpl;
+import com.posterr.services.post.PostServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class PostController {
 
     @PostMapping("/posts")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public CreatePostResponseDTO createSinglePost(@RequestBody @Valid CreatePostRequestDTO postRequestDTO) {
+    public CreatePostResponseDTO createSinglePost(@RequestBody @Valid CreatePostRequestDTO postRequestDTO) throws ApiException {
         return postService.createPost(postRequestDTO);
     }
 

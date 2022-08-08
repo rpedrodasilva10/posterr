@@ -1,8 +1,10 @@
 package com.posterr.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.posterr.enumerations.PostTypeEnum;
 import com.posterr.exception.BusinessException;
 import com.posterr.models.dto.CreatePostRequestDTO;
+import com.posterr.models.entities.Post;
 import com.posterr.repositories.post.PostRepository;
 import com.posterr.services.post.PostService;
 import com.posterr.services.post.PostServiceImpl;
@@ -19,6 +21,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @WebMvcTest(PostServiceImpl.class)
 @ComponentScan("com.posterr")
@@ -72,6 +77,29 @@ class PostServiceTest {
     @DisplayName("Should pass if the maximum posts per day was not achieved")
     void shouldFailWhenCreatingPostsWithMaxPerDayNotAchieved() {
         Mockito.when(postRepository.countTodayUsersPosts(Mockito.any())).thenReturn(3L);
+        Assertions.assertDoesNotThrow(() -> this.serviceUnderTest.createPost(this.dummyPost));
+    }
+
+
+    @Test
+    @DisplayName("Should fail when REPOSTING a post of type 'REPOST'")
+    void shouldFailWhenRepostingPostTypeRepost() {
+        this.dummyPost.setOriginPostId(2L);
+        this.dummyPost.setType(PostTypeEnum.REPOST.toString());
+        Post mockPostToReturnOnFind = Post.of(35L, "This is a repost", TestUtils.createMockUser(), PostTypeEnum.REPOST.toString(), LocalDateTime.now(), null);
+        Mockito.when(this.postRepository.findById(Mockito.any())).thenReturn(Optional.of(mockPostToReturnOnFind));
+
+        Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.createPost(this.dummyPost));
+    }
+
+    @Test
+    @DisplayName("Should create REPOST with success")
+    void shouldCreateRepostWithSuccess() {
+        this.dummyPost.setOriginPostId(2L);
+        this.dummyPost.setType(PostTypeEnum.REPOST.toString());
+        Post mockPostToReturnOnFind = Post.of(35L, "This is a repost", TestUtils.createMockUser(), PostTypeEnum.ORIGINAL.toString(), LocalDateTime.now(), null);
+        Mockito.when(this.postRepository.findById(Mockito.any())).thenReturn(Optional.of(mockPostToReturnOnFind));
+
         Assertions.assertDoesNotThrow(() -> this.serviceUnderTest.createPost(this.dummyPost));
     }
 

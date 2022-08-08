@@ -32,4 +32,7 @@ public class Post {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private Post originPost;
+
 }

@@ -2,6 +2,7 @@ package com.posterr.services.post;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.posterr.enumerations.PostTypeEnum;
 import com.posterr.exception.BusinessException;
 import com.posterr.models.dto.CreatePostRequestDTO;
 import com.posterr.models.dto.CreatePostResponseDTO;
@@ -38,6 +39,7 @@ public class PostServiceImpl implements PostService {
 
         Post newPost = objectMapper.convertValue(createPostRequestDTO, Post.class);
         newPost.setUser(foundUser);
+        newPost.setOriginPost(this.findPostById(createPostRequestDTO.getOriginPostId()));
 
         // Checks against rules if is possible to create a new post
         this.validatePostCreation(newPost);
@@ -49,13 +51,36 @@ public class PostServiceImpl implements PostService {
 
     }
 
-    private void validatePostCreation(Long userId) throws BusinessException {
+    @Override
+    public void validatePostCreation(Post post) throws BusinessException {
         final int usersMaxPostsPerDay = 5;
-        Long userPostsQuantityFromToday = this.postRepository.countTodayUsersPosts(userId);
+        Long userPostsQuantityFromToday = this.postRepository.countTodayUsersPosts(post.getUser().getId());
 
         if (userPostsQuantityFromToday >= usersMaxPostsPerDay) {
             throw new BusinessException(HttpStatus.NOT_ACCEPTABLE.value(), "User reached the limit of posts per day", "You can create " + usersMaxPostsPerDay + " posts per day");
         }
+
+        this.validateRepostCreation(post);
     }
+
+    @Override
+    public void validateRepostCreation(Post post) throws BusinessException {
+        // If is not REPOST type, we don't do anything
+        if (post.getType().equals(PostTypeEnum.REPOST.toString())) {
+            Post originPost = post.getOriginPost();
+            if (Objects.isNull(originPost)) {
+                throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "Invalid repost! Original post not found", "Base post not found with the given id");
+            }
+
+            if (originPost.getType().equals(PostTypeEnum.REPOST.toString())) {
+                throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "Invalid repost! Original post must be of type 'ORIGINAL' or 'QUOTE'", "Base post invalid type for this operation");
+            }
+        }
+    }
+
+    private Post findPostById(Long postId) {
+        return this.postRepository.findById(postId).orElse(null);
+    }
+
 
 }

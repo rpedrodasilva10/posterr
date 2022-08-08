@@ -21,5 +21,6 @@ public class CreatePostRequestDTO {
     @NotBlank(message = "The post type is mandatory")
     @Pattern(message = "Invalid post type! The valid types are: 'ORIGINAL', 'QUOTE' or 'REPOST'", regexp = "ORIGINAL|QUOTE|REPOST")
     private String type;
-
+    
+    private Long originPostId;
 }

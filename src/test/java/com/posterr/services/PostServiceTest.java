@@ -22,7 +22,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @WebMvcTest(PostServiceImpl.class)
@@ -86,7 +85,11 @@ class PostServiceTest {
     void shouldFailWhenRepostingPostTypeRepost() {
         this.dummyPost.setOriginPostId(2L);
         this.dummyPost.setType(PostTypeEnum.REPOST.toString());
-        Post mockPostToReturnOnFind = Post.of(35L, "This is a repost", TestUtils.createMockUser(), PostTypeEnum.REPOST.toString(), LocalDateTime.now(), null);
+
+        Post mockPostToReturnOnFind = TestUtils.createMockSavedPost();
+        mockPostToReturnOnFind.setContent("This is a repost");
+        mockPostToReturnOnFind.setType(PostTypeEnum.REPOST.toString());
+
         Mockito.when(this.postRepository.findById(Mockito.any())).thenReturn(Optional.of(mockPostToReturnOnFind));
 
         Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.createPost(this.dummyPost));
@@ -97,7 +100,9 @@ class PostServiceTest {
     void shouldCreateRepostWithSuccess() {
         this.dummyPost.setOriginPostId(2L);
         this.dummyPost.setType(PostTypeEnum.REPOST.toString());
-        Post mockPostToReturnOnFind = Post.of(35L, "This is a repost", TestUtils.createMockUser(), PostTypeEnum.ORIGINAL.toString(), LocalDateTime.now(), null);
+
+        Post mockPostToReturnOnFind = TestUtils.createMockSavedPost();
+        mockPostToReturnOnFind.setType(PostTypeEnum.ORIGINAL.toString());
         Mockito.when(this.postRepository.findById(Mockito.any())).thenReturn(Optional.of(mockPostToReturnOnFind));
 
         Assertions.assertDoesNotThrow(() -> this.serviceUnderTest.createPost(this.dummyPost));

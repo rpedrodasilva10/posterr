@@ -3,6 +3,7 @@ package com.posterr.services.user;
 import com.posterr.models.entities.User;
 import com.posterr.repositories.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    @SneakyThrows
     public User findUserById(Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
 

@@ -8,14 +8,14 @@ import com.posterr.models.dto.CreatePostResponseDTO;
 import com.posterr.models.entities.Post;
 import com.posterr.models.entities.User;
 import com.posterr.repositories.post.PostRepository;
-import com.posterr.repositories.user.UserRepository;
+import com.posterr.services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -23,24 +23,24 @@ import java.util.Optional;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final ObjectMapper objectMapper;
 
     @Override
     public CreatePostResponseDTO createPost(CreatePostRequestDTO createPostRequestDTO) throws BusinessException {
         log.info("[createClient] :: Creating Post... Request: {}",
                 objectMapper.convertValue(createPostRequestDTO, JsonNode.class));
-        Optional<User> userOpt = this.userRepository.findById(createPostRequestDTO.getUserId());
+        User foundUser = this.userService.findUserById(createPostRequestDTO.getUserId());
 
-        if (!userOpt.isPresent()) {
+        if (Objects.isNull(foundUser)) {
             throw new BusinessException(-2, "User not found", "Could not find the user with the given id");
         }
 
         Post newPost = objectMapper.convertValue(createPostRequestDTO, Post.class);
-        newPost.setUser(userOpt.get());
+        newPost.setUser(foundUser);
 
         // Checks against rules if is possible to create a new post
-        this.validatePostCreation(newPost.getUser().getId());
+        this.validatePostCreation(newPost);
 
 
         CreatePostResponseDTO created = CreatePostResponseDTO.of(this.postRepository.save(newPost).getId());

@@ -257,6 +257,11 @@ definitions:
         format: int64
         description: 'Unique identifier from the user post that is being quoted or reposted'
         example: 5
+      quoteMessage:
+        type: string
+        description: 'Quote post message'
+        example: 'Swagger is awesome'
+
     required:
       - content
       - userId

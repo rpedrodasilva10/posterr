@@ -252,6 +252,11 @@ definitions:
         type: string
         description: 'Post type'
         enum: ['ORIGINAL', 'REPOST', 'QUOTE']
+      originalPostId:
+        type: integer
+        format: int64
+        description: 'Unique identifier from the user post that is being quoted or reposted'
+        example: 5
     required:
       - content
       - userId

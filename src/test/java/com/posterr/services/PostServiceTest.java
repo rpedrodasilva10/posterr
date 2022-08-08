@@ -108,6 +108,19 @@ class PostServiceTest {
         Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.createPost(this.dummyPost));
     }
 
+    @Test
+    @DisplayName("Should fail when trying to create a REPOST with not found originPostId")
+    void shouldFailWhenCreatingRepostWithOriginPostIdNotFound() {
+        this.dummyPost.setOriginPostId(3125L);
+        this.dummyPost.setType(PostTypeEnum.REPOST.toString());
+
+//        Post mockPostToReturnOnFind = TestUtils.createMockSavedPost();
+//        mockPostToReturnOnFind.setContent("This is a repost");
+
+
+        Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.createPost(this.dummyPost));
+    }
+
 
     @Test
     @DisplayName("Should create REPOST with success")

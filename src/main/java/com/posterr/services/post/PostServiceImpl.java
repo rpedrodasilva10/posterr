@@ -37,9 +37,14 @@ public class PostServiceImpl implements PostService {
             throw new BusinessException(-2, "User not found", "Could not find the user with the given id");
         }
 
-        Post newPost = objectMapper.convertValue(createPostRequestDTO, Post.class);
+        Post newPost = createPostRequestDTO.toModel();
         newPost.setUser(foundUser);
-        newPost.setOriginPost(this.findPostById(createPostRequestDTO.getOriginPostId()));
+
+        // I only search a base post and define the message if it's not an original post
+        if (!PostTypeEnum.ORIGINAL.toString().equals(newPost.getType())) {
+            newPost.setOriginPost(this.findPostById(createPostRequestDTO.getOriginPostId()));
+
+        }
 
         // Checks against rules if is possible to create a new post
         this.validatePostCreation(newPost);
@@ -61,25 +66,51 @@ public class PostServiceImpl implements PostService {
         }
 
         this.validateRepostCreation(post);
+        this.validateQuotePostCreation(post);
     }
 
     @Override
     public void validateRepostCreation(Post post) throws BusinessException {
         // If is not REPOST type, we don't do anything
-        if (post.getType().equals(PostTypeEnum.REPOST.toString())) {
-            Post originPost = post.getOriginPost();
-            if (Objects.isNull(originPost)) {
-                throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "Invalid repost! Original post not found", "Base post not found with the given id");
-            }
+        if (!post.getType().equals(PostTypeEnum.REPOST.toString()))
+            return;
 
-            if (originPost.getType().equals(PostTypeEnum.REPOST.toString())) {
-                throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "Invalid repost! Original post must be of type 'ORIGINAL' or 'QUOTE'", "Base post invalid type for this operation");
-            }
+        checkIfBasePostExists(post);
+        Post originPost = post.getOriginPost();
+
+        if (originPost.getType().equals(PostTypeEnum.REPOST.toString())) {
+            throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "Invalid repost! Original post must be of type 'ORIGINAL' or 'QUOTE'", "Base post invalid type for this operation");
         }
+    }
+
+
+    private void checkIfBasePostExists(Post post) throws BusinessException {
+        Post originPost = post.getOriginPost();
+        if (Objects.isNull(originPost)) {
+            throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "Invalid repost! Original post not found", "Base post not found with the given id");
+        }
+
+
     }
 
     private Post findPostById(Long postId) {
         return this.postRepository.findById(postId).orElse(null);
+    }
+
+    @Override
+    public void validateQuotePostCreation(Post post) throws BusinessException {
+        // If is not QUOTE type, we don't do anything
+        if (!post.getType().equals(PostTypeEnum.QUOTE.toString()))
+            return;
+
+        checkIfBasePostExists(post);
+        Post originPost = post.getOriginPost();
+
+        if (originPost.getType().equals(PostTypeEnum.QUOTE.toString())) {
+            throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "Invalid repost! Original post must be of type 'ORIGINAL' or 'QUOTE'", "Base post invalid type for this operation");
+        }
+
+        // I won't check for quoteMessage not empty because Twitter allow users to quote tweets without message
     }
 
 

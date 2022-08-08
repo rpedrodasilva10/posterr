@@ -1,6 +1,7 @@
 package com.posterr.models.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,7 +13,8 @@ import java.time.LocalDateTime;
 @Table(name = "posts")
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor(staticName = "of")
+@AllArgsConstructor
+@Builder
 public class Post {
 
     @Id
@@ -34,5 +36,7 @@ public class Post {
 
     @OneToOne(fetch = FetchType.LAZY)
     private Post originPost;
+
+    private String quoteMessage;
 
 }

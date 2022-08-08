@@ -12,4 +12,6 @@ public interface PostService {
     void validatePostCreation(Post post) throws BusinessException;
 
     void validateRepostCreation(Post post) throws BusinessException;
+
+    void validateQuotePostCreation(Post post) throws BusinessException;
 }

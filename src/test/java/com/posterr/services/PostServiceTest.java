@@ -108,5 +108,36 @@ class PostServiceTest {
         Assertions.assertDoesNotThrow(() -> this.serviceUnderTest.createPost(this.dummyPost));
     }
 
+    @Test
+    @DisplayName("Should fail when QUOTING a post type QUOTE with success")
+    void shouldFailWhenQuotingPostTypeQuote() {
+        this.dummyPost.setOriginPostId(2L);
+        this.dummyPost.setQuoteMessage("This is what truth looks like. Look at this guy's wisdom");
+        this.dummyPost.setType(PostTypeEnum.QUOTE.toString());
+
+        Post mockPostToReturnOnFind = TestUtils.createMockSavedPost();
+        mockPostToReturnOnFind.setContent("Renan should be hired, he is a very good software engineer");
+        mockPostToReturnOnFind.setType(PostTypeEnum.QUOTE.toString());
+
+        Mockito.when(this.postRepository.findById(Mockito.any())).thenReturn(Optional.of(mockPostToReturnOnFind));
+
+        Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.createPost(this.dummyPost));
+    }
+
+    @Test
+    @DisplayName("Should create QUOTE post with success")
+    void shouldCreateQuotePostWithSuccess() {
+        this.dummyPost.setOriginPostId(2L);
+        this.dummyPost.setQuoteMessage("This is what truth looks like. Look at this guy's wisdom");
+        this.dummyPost.setType(PostTypeEnum.QUOTE.toString());
+
+        Post mockPostToReturnOnFind = TestUtils.createMockSavedPost();
+        mockPostToReturnOnFind.setContent("Renan should be hired, he is a very good software engineer");
+
+        Mockito.when(this.postRepository.findById(Mockito.any())).thenReturn(Optional.of(mockPostToReturnOnFind));
+
+        Assertions.assertDoesNotThrow(() -> this.serviceUnderTest.createPost(this.dummyPost));
+    }
+
 
 }

@@ -1,5 +1,7 @@
 package com.posterr.models.dto;
 
+import com.posterr.enumerations.PostTypeEnum;
+import com.posterr.models.entities.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -21,6 +23,18 @@ public class CreatePostRequestDTO {
     @NotBlank(message = "The post type is mandatory")
     @Pattern(message = "Invalid post type! The valid types are: 'ORIGINAL', 'QUOTE' or 'REPOST'", regexp = "ORIGINAL|QUOTE|REPOST")
     private String type;
-    
+
     private Long originPostId;
+
+    private String quoteMessage;
+
+    public Post toModel() {
+        return Post.builder()
+                .content(this.getContent())
+                .quoteMessage(this.getType().equals(PostTypeEnum.QUOTE.toString()) ? this.getQuoteMessage() : null)
+                .type(this.getType())
+                .build();
+    }
+
+
 }

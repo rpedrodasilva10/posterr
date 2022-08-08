@@ -15,7 +15,7 @@ public class TestUtils {
     }
 
     public static CreatePostRequestDTO createDummyPostRequest() {
-        return CreatePostRequestDTO.of("This is a simple post", 1L, "ORIGINAL", null);
+        return CreatePostRequestDTO.of("This is a simple post", 1L, "ORIGINAL", null, null);
     }
 
     public static User createMockUser() {
@@ -23,7 +23,13 @@ public class TestUtils {
     }
 
     public static Post createMockSavedPost() {
-        return Post.of(28L, "This is a mock content", createMockUser(), PostTypeEnum.ORIGINAL.toString(), LocalDateTime.now(), null);
+        return Post.builder()
+                .id(28L)
+                .content("This is a mock content")
+                .user(createMockUser())
+                .type(PostTypeEnum.ORIGINAL.toString())
+                .createdAt(LocalDateTime.now())
+                .build();
     }
 
     public static String getContentOutSideLimit() {

@@ -34,7 +34,7 @@ public class PostServiceImpl implements PostService {
         User foundUser = this.userService.findUserById(createPostRequestDTO.getUserId());
 
         if (Objects.isNull(foundUser)) {
-            throw new BusinessException(-2, "User not found", "Could not find the user with the given id");
+            throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "User not found", "Could not find the user with the given id");
         }
 
         Post newPost = createPostRequestDTO.toModel();
@@ -42,6 +42,9 @@ public class PostServiceImpl implements PostService {
 
         // I only search a base post and define the message if it's not an original post
         if (!PostTypeEnum.ORIGINAL.toString().equals(newPost.getType())) {
+            if (Objects.isNull(createPostRequestDTO.getOriginPostId())) {
+                throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "Invalid base post!", "To create posts with type 'QUOTE' or 'REPOST' is mandatory to inform field 'originPostId'");
+            }
             newPost.setOriginPost(this.findPostById(createPostRequestDTO.getOriginPostId()));
 
         }
@@ -94,9 +97,6 @@ public class PostServiceImpl implements PostService {
     }
 
     private Post findPostById(Long postId) {
-        if (Objects.isNull(postId)) {
-            return null;
-        }
         return this.postRepository.findById(postId).orElse(null);
     }
 

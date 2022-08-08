@@ -94,6 +94,9 @@ public class PostServiceImpl implements PostService {
     }
 
     private Post findPostById(Long postId) {
+        if (Objects.isNull(postId)) {
+            return null;
+        }
         return this.postRepository.findById(postId).orElse(null);
     }
 

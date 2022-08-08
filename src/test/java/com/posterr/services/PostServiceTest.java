@@ -96,6 +96,20 @@ class PostServiceTest {
     }
 
     @Test
+    @DisplayName("Should fail when trying to create a REPOST with originPostId null")
+    void shouldFailWhenCreatingRepostWithOriginPostIdNull() {
+        this.dummyPost.setOriginPostId(null);
+        this.dummyPost.setType(PostTypeEnum.REPOST.toString());
+
+        Post mockPostToReturnOnFind = TestUtils.createMockSavedPost();
+        mockPostToReturnOnFind.setContent("This is a repost");
+
+
+        Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.createPost(this.dummyPost));
+    }
+
+
+    @Test
     @DisplayName("Should create REPOST with success")
     void shouldCreateRepostWithSuccess() {
         this.dummyPost.setOriginPostId(2L);
@@ -109,7 +123,20 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("Should fail when QUOTING a post type QUOTE with success")
+    @DisplayName("Should fail when trying to create a QUOTE post with originPostId null")
+    void shouldFailWhenCreatingQuoteWithOriginPostIdNull() {
+        this.dummyPost.setOriginPostId(null);
+        this.dummyPost.setType(PostTypeEnum.QUOTE.toString());
+
+        Post mockPostToReturnOnFind = TestUtils.createMockSavedPost();
+        mockPostToReturnOnFind.setContent("This is a quote");
+
+
+        Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.createPost(this.dummyPost));
+    }
+
+    @Test
+    @DisplayName("Should fail when QUOTING a post type QUOTE")
     void shouldFailWhenQuotingPostTypeQuote() {
         this.dummyPost.setOriginPostId(2L);
         this.dummyPost.setQuoteMessage("This is what truth looks like. Look at this guy's wisdom");

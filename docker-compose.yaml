@@ -8,13 +8,13 @@ services:
       dockerfile: Dockerfile
     container_name: posterr_app
     depends_on:
-      - db
+      - posterr_db
     env_file:
       - .env
 
     ports:
       - 8080:8080
-  db:
+  posterr_db:
     image: 'postgres'
     container_name: posterr_db
     environment:

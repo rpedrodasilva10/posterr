@@ -24,6 +24,23 @@ mvn clean package # Creates JAR file
 docker-compose up # Spin up all necessary containers
 ```
 
+# Critique
+## Improvements
+***Listing posts*** - Create the list functionality to cover all requirements (including frontend ones). <br/>
+***Database schema*** - Improve the database schema to a model more according to the demand and other features (like listing, sorting, searching and do other processing with the posts created). With a full overview of the project, I could define which option can perform better (single table for posts? a specific table for each type of post?)
+
+## Scaling
+***If this project were to grow and have many users and posts, which parts do you think would fail first?***
+
+The first thing that would break on high load is the application (stop responding), given the synchronous characteristics. If we reach the limit of available threads the app would start to queue requests until no memory is available. 
+
+***In a real-life situation, what steps would you take to scale this product? What other types of technology and infrastructure might you need to use***
+
+It depends on the characteristics of the access. Let's suppose we now have endpoints to list posts, and we are having a high load of reading nature we could use some memory cache (e.g: Memcached) to store common read data and objects (Timelines, users etc.) .
+If the gap is in the writing capacities I would study some async approaches to distribute this API writing process. We could use some Pub/Sub or other async architecture structure to answer the clients when they call the service but do the 'hard computing' operation after. So we could have a topic where all posts can be sent and a subscription that reads this topic and persist asynchronously.
+In either situation, the easiest solution would be separate the services and scale them individually
+
+
 Made with ❤ by [rpsilva](https://github.com/rpedrodasilva10)
 <div>  
   <a href = "mailto:rpedrodasilva10@gmail.com"><img src="https://img.shields.io/badge/-Gmail-%23333?style=for-the-badge&logo=gmail&logoColor=white" target="_blank"></a>

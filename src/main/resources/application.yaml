@@ -5,6 +5,12 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: ${DB_DATA_SOURCE_DRIVER}
     initialization-mode: ${DB_INIT_MODE}
+    hikari:
+      connection-timeout: ${HIKARI_CONNECTION_TIMEOUT}
+      idle-timeout: ${HIKARI_IDLE_TIMEOUT}
+      maximum-pool-size: ${HIKARI_MAXIMUM_POOL_SIZE}
+      max-lifetime: ${HIKARI_MAX_LIFETIME}
+      minimum-idle: ${HIKARI_MINIMUM_IDLE}
   jpa:
     properties:
       hibernate:

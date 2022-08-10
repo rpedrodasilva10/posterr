@@ -107,7 +107,6 @@ responses:
 
 paths:
   /posts:
-
     post:
       tags:
         - Public
@@ -239,7 +238,7 @@ definitions:
     title: PostList
     description: 'Object to describe a list composed by multiple instances of Post entity'
     items:
-      $ref: '#/definitions/Post'
+      $ref: '#/definitions/GetPostsResponse'
 
   User:
     type: object
@@ -303,6 +302,17 @@ definitions:
     enum: ['ORIGINAL', 'REPOST', 'QUOTE']
 
 
+  GetPostsResponse:
+    type: object
+    title: GetPostsResponse
+    description: 'Object to describe a list of posts being returned'
+    properties:
+      originPost:
+        $ref: '#/definitions/Post'
+    allOf:
+      - $ref: '#/definitions/Post'
+    required:
+      - type
 
   Post:
     type: object

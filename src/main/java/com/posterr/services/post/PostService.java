@@ -5,8 +5,12 @@ import com.posterr.models.dto.CreatePostRequestDTO;
 import com.posterr.models.dto.CreatePostResponseDTO;
 import com.posterr.models.entities.Post;
 
+import java.util.List;
+
 public interface PostService {
     CreatePostResponseDTO createPost(CreatePostRequestDTO createPostRequestDTO) throws BusinessException;
+
+    List<Post> getPosts(Long userId, Integer skip, Integer limit);
 
 
     void validatePostCreation(Post post) throws BusinessException;

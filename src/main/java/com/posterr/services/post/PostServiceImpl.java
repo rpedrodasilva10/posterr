@@ -10,12 +10,16 @@ import com.posterr.models.entities.Post;
 import com.posterr.models.entities.User;
 import com.posterr.repositories.post.PostRepository;
 import com.posterr.services.user.UserService;
+import com.posterr.utils.OffsetBasedPageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -113,8 +117,12 @@ public class PostServiceImpl implements PostService {
             throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "Invalid repost! Original post must be of type 'ORIGINAL' or 'QUOTE'", "Base post invalid type for this operation");
         }
 
-        // I won't check for quoteMessage not empty because Twitter allow users to quote tweets without message
+        // I won't check for quoteMessage not empty because Twitter allow users to quote tweets without a message
     }
 
-
+    @Override
+    public List<Post> getPosts(Long userId, Integer skip, Integer limit) {
+        Pageable pageable = new OffsetBasedPageRequest(limit, skip, Sort.by(Sort.Direction.DESC, "id"));
+        return this.postRepository.findAllByUserId(userId, pageable);
+    }
 }

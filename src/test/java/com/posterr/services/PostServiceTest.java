@@ -22,6 +22,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @WebMvcTest(PostServiceImpl.class)
@@ -114,10 +117,6 @@ class PostServiceTest {
         this.dummyPost.setOriginPostId(3125L);
         this.dummyPost.setType(PostTypeEnum.REPOST.toString());
 
-//        Post mockPostToReturnOnFind = TestUtils.createMockSavedPost();
-//        mockPostToReturnOnFind.setContent("This is a repost");
-
-
         Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.createPost(this.dummyPost));
     }
 
@@ -179,5 +178,38 @@ class PostServiceTest {
         Assertions.assertDoesNotThrow(() -> this.serviceUnderTest.createPost(this.dummyPost));
     }
 
+    @Test
+    @DisplayName("Should return 200 when find posts to return")
+    void shouldReturnOkWhenFindPosts() {
+        List<Post> posts = Arrays.asList(TestUtils.createMockSavedPost(), TestUtils.createMockSavedPost());
+        Mockito.when(this.postRepository.findAllByUserId(Mockito.any(), Mockito.any())).thenReturn(posts);
+
+        List<Post> foundPosts = Assertions.assertDoesNotThrow(() -> this.serviceUnderTest.getPosts(1L, 0, 10));
+
+        Assertions.assertFalse(foundPosts.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Should return 200 when there are no posts to return")
+    void shouldReturnOkWhenPostsNotFound() {
+        List<Post> posts = new ArrayList<>();
+        Mockito.when(this.postRepository.findAllByUserId(Mockito.any(), Mockito.any())).thenReturn(posts);
+
+        List<Post> foundPosts = Assertions.assertDoesNotThrow(() -> this.serviceUnderTest.getPosts(1L, 0, 10));
+
+        Assertions.assertTrue(foundPosts.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Should return bad request when using negative limit")
+    void shouldReturnBadRequestWhenUsingNegativeLimit() {
+        Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.getPosts(1L, 0, -10));
+    }
+
+    @Test
+    @DisplayName("Should return bad request when using negative skip")
+    void shouldReturnBadRequestWhenUsingNegativeSkip() {
+        Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.getPosts(1L, -5, 10));
+    }
 
 }

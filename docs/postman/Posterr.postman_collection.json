@@ -7,13 +7,215 @@
 	},
 	"item": [
 		{
+			"name": "actuator",
+			"item": [
+				{
+					"name": "/actuator",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"List posts\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/actuator",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"actuator"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 - Get posts",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/api/v1/posts?userId=3&limit=1&skip=1",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"posts"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "3"
+										},
+										{
+											"key": "limit",
+											"value": "1"
+										},
+										{
+											"key": "skip",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 10 Aug 2022 22:57:29 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 7,\n        \"content\": \"Who is a good match for this position?\",\n        \"user\": {\n            \"id\": 3,\n            \"username\": \"hire\",\n            \"postCount\": 0,\n            \"createdAt\": \"2022-08-09T16:36:24.069973\"\n        },\n        \"type\": \"REPOST\",\n        \"createdAt\": \"2022-08-10T18:55:03.664\",\n        \"originPost\": {\n            \"id\": 1,\n            \"content\": \"Who is a good match for this position?\",\n            \"user\": {\n                \"id\": 3,\n                \"username\": \"hire\",\n                \"postCount\": 0,\n                \"createdAt\": \"2022-08-09T16:36:24.069973\"\n            },\n            \"type\": \"ORIGINAL\",\n            \"createdAt\": \"2022-08-09T16:37:25.038\",\n            \"originPost\": null,\n            \"quoteMessage\": null\n        },\n        \"quoteMessage\": null\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "/actuator/health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"List posts\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/actuator/health",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 - Get posts",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/api/v1/posts?userId=3&limit=1&skip=1",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"posts"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "3"
+										},
+										{
+											"key": "limit",
+											"value": "1"
+										},
+										{
+											"key": "skip",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 10 Aug 2022 22:57:29 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 7,\n        \"content\": \"Who is a good match for this position?\",\n        \"user\": {\n            \"id\": 3,\n            \"username\": \"hire\",\n            \"postCount\": 0,\n            \"createdAt\": \"2022-08-09T16:36:24.069973\"\n        },\n        \"type\": \"REPOST\",\n        \"createdAt\": \"2022-08-10T18:55:03.664\",\n        \"originPost\": {\n            \"id\": 1,\n            \"content\": \"Who is a good match for this position?\",\n            \"user\": {\n                \"id\": 3,\n                \"username\": \"hire\",\n                \"postCount\": 0,\n                \"createdAt\": \"2022-08-09T16:36:24.069973\"\n            },\n            \"type\": \"ORIGINAL\",\n            \"createdAt\": \"2022-08-09T16:37:25.038\",\n            \"originPost\": null,\n            \"quoteMessage\": null\n        },\n        \"quoteMessage\": null\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
 			"name": "/posts - Create new post",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 201\", function () {\r",
+							"pm.test(\"Create post\", function () {\r",
 							"    pm.response.to.have.status(201);\r",
 							"});\r",
 							""
@@ -27,7 +229,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"content\": \"Who is a good match for this position?\",\r\n    \"userId\": 3,\r\n    \"type\": \"QUOTE\",\r\n    \"originPostId\": 16,\r\n    \"quoteMessage\": \"That's an easy question!\"\r\n}",
+					"raw": "{\r\n    \"content\": \"Who is a good match for this position?\",\r\n    \"userId\": 4,\r\n    \"type\": \"ORIGINAL\",\r\n    \"originPostId\": 7,\r\n    \"quoteMessage\": \"Hellooooo there\"\r\n\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -512,6 +714,122 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"code\": 400,\n    \"message\": \"Invalid base post!\",\n    \"description\": \"To create posts with type 'QUOTE' or 'REPOST' is mandatory to inform field 'originPostId'\"\n}"
+				}
+			]
+		},
+		{
+			"name": "/posts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"List posts\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/api/v1/posts?startDate=2022-08-08&endDate=2022-10-12&skip=0&limit=3",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"posts"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2022-08-08"
+						},
+						{
+							"key": "endDate",
+							"value": "2022-10-12"
+						},
+						{
+							"key": "skip",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "3"
+						},
+						{
+							"key": "userId",
+							"value": "3",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 - Get posts",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/v1/posts?userId=3&limit=1&skip=1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"posts"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "3"
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								},
+								{
+									"key": "skip",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 10 Aug 2022 22:57:29 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 7,\n        \"content\": \"Who is a good match for this position?\",\n        \"user\": {\n            \"id\": 3,\n            \"username\": \"hire\",\n            \"postCount\": 0,\n            \"createdAt\": \"2022-08-09T16:36:24.069973\"\n        },\n        \"type\": \"REPOST\",\n        \"createdAt\": \"2022-08-10T18:55:03.664\",\n        \"originPost\": {\n            \"id\": 1,\n            \"content\": \"Who is a good match for this position?\",\n            \"user\": {\n                \"id\": 3,\n                \"username\": \"hire\",\n                \"postCount\": 0,\n                \"createdAt\": \"2022-08-09T16:36:24.069973\"\n            },\n            \"type\": \"ORIGINAL\",\n            \"createdAt\": \"2022-08-09T16:37:25.038\",\n            \"originPost\": null,\n            \"quoteMessage\": null\n        },\n        \"quoteMessage\": null\n    }\n]"
 				}
 			]
 		}

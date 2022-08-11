@@ -17,18 +17,18 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Slf4j
-@RequestMapping("/api/v1")
+@RequestMapping(value = "/api/v1/posts")
 public class PostController {
 
     private final PostServiceImpl postService;
 
-    @PostMapping("/posts")
+    @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public CreatePostResponseDTO createSinglePost(@RequestBody @Valid CreatePostRequestDTO postRequestDTO) throws BusinessException {
         return postService.createPost(postRequestDTO);
     }
 
-    @GetMapping("/posts")
+    @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
     public List<Post> getPosts(
             @RequestParam(required = false, defaultValue = "0") Integer skip,

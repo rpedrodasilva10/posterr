@@ -17,8 +17,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+        Optional<User> userOptional = this.userRepository.findById(userId);
 
         return userOptional.orElse(null);
+    }
+
+    @Override
+    public void incrementPostCount(User user) {
+        user.setPostCount(user.getPostCount() + 1);
+        this.userRepository.save(user);
     }
 }

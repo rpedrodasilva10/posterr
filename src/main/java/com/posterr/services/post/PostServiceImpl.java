@@ -57,9 +57,10 @@ public class PostServiceImpl implements PostService {
 
         // Checks against rules if is possible to create a new post
         this.validatePostCreation(newPost);
-
+        this.userService.incrementPostCount(foundUser);
 
         CreatePostResponseDTO created = CreatePostResponseDTO.of(this.postRepository.save(newPost).getId());
+
         log.info("[createPost] :: Successfully created post ID: {}", created.getId());
         return created;
 

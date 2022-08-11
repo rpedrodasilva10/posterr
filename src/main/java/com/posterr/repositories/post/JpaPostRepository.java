@@ -17,5 +17,7 @@ public interface JpaPostRepository extends PostRepository, JpaRepository<Post, L
     @Query(nativeQuery = true, value = "select count(*) from posts where user_id  = ?1 and created_at\\:\\:date = now()\\:\\:date;")
     Long countTodayUsersPosts(Long userId);
 
+    List<Post> findAllByCreatedAtBetween(Pageable pageable, LocalDateTime startDate, LocalDateTime endDate);
+
     List<Post> findByUserIdAndCreatedAtBetween(Long userId, Pageable pageable, LocalDateTime startDate, LocalDateTime endDate);
 }

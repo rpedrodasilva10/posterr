@@ -125,11 +125,16 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPosts(Long userId, Integer skip, Integer limit, String startDate, String endDate) throws BusinessException {
+        log.info("[getPosts] :: Searching posts.. userId: {}, skip: {}, limit: {}, startDate: {}, endDate: {}", userId, skip, limit, startDate, endDate);
         LocalDateTime treatedStartDate = DateUtils.treatStartDate(startDate);
         LocalDateTime treatedEndDate = DateUtils.treatEndDate(endDate);
-        
+
         Pageable pageable = new OffsetBasedPageRequest(limit, skip, Sort.by(Sort.Direction.DESC, "id"));
 
+        if (Objects.isNull(userId)) {
+            log.info("[getPosts] :: Searching posts without userId");
+            return this.postRepository.findAllByCreatedAtBetween(pageable, treatedStartDate, treatedEndDate);
+        }
         return this.postRepository.findByUserIdAndCreatedAtBetween(userId, pageable, treatedStartDate, treatedEndDate);
 
     }

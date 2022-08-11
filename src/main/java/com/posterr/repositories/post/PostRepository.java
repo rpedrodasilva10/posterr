@@ -13,7 +13,9 @@ public interface PostRepository {
     Long countTodayUsersPosts(Long userId);
 
     Optional<Post> findById(Long postId);
-    
+
+
+    List<Post> findAllByCreatedAtBetween(Pageable pageable, LocalDateTime startDate, LocalDateTime endDate);
 
     List<Post> findByUserIdAndCreatedAtBetween(Long userId, Pageable pageable, LocalDateTime startDate, LocalDateTime endDate);
 }

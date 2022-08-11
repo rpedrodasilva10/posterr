@@ -28,14 +28,14 @@ public class PostController {
         return postService.createPost(postRequestDTO);
     }
 
-    @GetMapping("/users/{userId}/posts")
+    @GetMapping("/posts")
     @ResponseStatus(code = HttpStatus.OK)
     public List<Post> getPosts(
             @RequestParam(required = false, defaultValue = "0") Integer skip,
             @RequestParam(required = false, defaultValue = "10") Integer limit,
             @RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate,
-            @PathVariable Long userId) throws BusinessException {
+            @RequestParam(required = false) Long userId) throws BusinessException {
         return postService.getPosts(userId, skip, limit, startDate, endDate);
     }
 

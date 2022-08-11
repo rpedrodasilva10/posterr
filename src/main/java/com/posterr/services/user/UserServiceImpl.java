@@ -24,7 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void incrementPostCount(User user) {
+        log.info("[incrementPostCount] :: Incrementing post count for userId: {}, current post count is: {} ", user.getId(), user.getPostCount());
         user.setPostCount(user.getPostCount() + 1);
         this.userRepository.save(user);
+        log.info("[incrementPostCount] :: Incremented! userId: {}, new post count is: {} ", user.getId(), user.getPostCount());
     }
 }

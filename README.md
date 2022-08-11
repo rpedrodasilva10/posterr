@@ -23,7 +23,7 @@ After that, you're good to go. Run:
 mvn clean package # Creates JAR file 
 docker-compose up # Spin up all necessary containers
 ```
-Now the app is up and running, check the [Postman Collection](./docs/postman/Postter%20-%20Collection.json) to see which requests (with examples) you can perform.
+Now the app is up and running, check the [Postman Collection](./docs/postman/Postter%20-%20Collection.json) and the [Swagger/Openapi](./docs/openapi.yaml) to see which requests (with examples) you can perform.
 # Critique
 ## Improvements
 ***Timeline service*** - Create a service to mount a timeline based on user social networking graph and preferences(This could be a scale factor). <br/>
@@ -33,6 +33,8 @@ Now the app is up and running, check the [Postman Collection](./docs/postman/Pos
 ***Database schema*** - Improve the database schema to a model more according to the demand and other features (like listing, sorting, searching and do other processing with the posts created). With a full overview of the project, I could define which option can perform better (single table for posts? a specific table for each type of post?)
 
 ***Better understanding of requirements*** - This can sound like a joke, or you might not believe it: I didn't have a Twitter account until I received this challenge - I've just signup - so some requirements could be more obvious to someone that had a Twitter account already.
+
+***More kinds of tests from the [Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html)*** - Create some integration tests
 
 
 ## Scaling

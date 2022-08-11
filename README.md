@@ -21,7 +21,7 @@ Navigate to the project's folder open the terminal and execute the commands bell
 After that, you're good to go. Run:
 ```sh
 mvn clean package # Creates JAR file 
-docker-compose up # Spin up all necessary containers
+docker-compose up --build # Spin up all necessary containers
 ```
 Now the app is up and running, check the [Postman Collection](./docs/postman/Postter%20-%20Collection.json) and the [Swagger/Openapi](./docs/openapi.yaml) to see which requests (with examples) you can perform.
 # Critique

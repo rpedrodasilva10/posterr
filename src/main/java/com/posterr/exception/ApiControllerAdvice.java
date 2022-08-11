@@ -25,11 +25,11 @@ public class ApiControllerAdvice {
     public ResponseEntity<ApiErrorResponse> handleMethodArgumentTypeMismatchException(
             MethodArgumentTypeMismatchException typeMismatchException) {
         String errorDescription = String
-                .format("'%s' is an invalid value for the field '%s' (%s)", typeMismatchException.getValue(),
+                .format("'%s' is an invalid value for the parameter '%s' (%s)", typeMismatchException.getValue(),
                         typeMismatchException.getName(), typeMismatchException.getRequiredType());
         BusinessException businessException = new BusinessException(
                 HttpStatus.BAD_REQUEST.value(),
-                errorDescription, typeMismatchException.getLocalizedMessage(), typeMismatchException, new ArrayList<>());
+                errorDescription, String.format("Invalid value for parameter '%s'", typeMismatchException.getName()), typeMismatchException, new ArrayList<>());
         return new ResponseEntity<>(businessException.getApiErrorResponse(),
                 HttpStatus.valueOf(businessException.getCode()));
     }

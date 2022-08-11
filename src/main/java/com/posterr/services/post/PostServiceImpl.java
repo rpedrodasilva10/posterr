@@ -10,6 +10,7 @@ import com.posterr.models.entities.Post;
 import com.posterr.models.entities.User;
 import com.posterr.repositories.post.PostRepository;
 import com.posterr.services.user.UserService;
+import com.posterr.utils.DateUtils;
 import com.posterr.utils.OffsetBasedPageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -121,8 +123,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPosts(Long userId, Integer skip, Integer limit) {
+    public List<Post> getPosts(Long userId, Integer skip, Integer limit, String startDate, String endDate) throws BusinessException {
+        LocalDateTime treatedStartDate = DateUtils.treatStartDate(startDate);
+        LocalDateTime treatedEndDate = DateUtils.treatEndDate(endDate);
+        
         Pageable pageable = new OffsetBasedPageRequest(limit, skip, Sort.by(Sort.Direction.DESC, "id"));
-        return this.postRepository.findAllByUserId(userId, pageable);
+
+        return this.postRepository.findByUserIdAndCreatedAtBetween(userId, pageable, treatedStartDate, treatedEndDate);
+
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -16,5 +17,5 @@ public interface JpaPostRepository extends PostRepository, JpaRepository<Post, L
     @Query(nativeQuery = true, value = "select count(*) from posts where user_id  = ?1 and created_at\\:\\:date = now()\\:\\:date;")
     Long countTodayUsersPosts(Long userId);
 
-    List<Post> findAllByUserId(Long userId, Pageable pageable);
+    List<Post> findByUserIdAndCreatedAtBetween(Long userId, Pageable pageable, LocalDateTime startDate, LocalDateTime endDate);
 }

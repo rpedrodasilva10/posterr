@@ -53,12 +53,11 @@ parameters:
     format: date
     description: 'End date to filter posts'
   userId:
-    in: query
+    in: path
     name: userId
-    required: false
+    required: true
     type: string
-    format: date
-    description: 'End date to filter posts'
+    description: 'User id to search posts'
 
 
 responses:
@@ -133,12 +132,13 @@ paths:
           $ref: '#/responses/405-DataInvalid'
         500:
           $ref: '#/responses/500-Exception'
+  /users/{userId}/posts:
     get:
       tags:
         - Public
-      summary: Get posts
+      summary: Get posts from a specific user
       description: Get posts from the database with the given parameters
-      operationId: getPosts
+      operationId: getUserPosts
       produces:
         - application/json
       consumes:
@@ -147,9 +147,9 @@ paths:
       parameters:
         - $ref: '#/parameters/skip'
         - $ref: '#/parameters/limit'
-        - $ref: '#/parameters/userId'
         - $ref: '#/parameters/startDate'
         - $ref: '#/parameters/endDate'
+        - $ref: '#/parameters/userId'
 
       responses:
         201:

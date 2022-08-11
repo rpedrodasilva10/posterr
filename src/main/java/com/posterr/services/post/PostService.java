@@ -10,7 +10,7 @@ import java.util.List;
 public interface PostService {
     CreatePostResponseDTO createPost(CreatePostRequestDTO createPostRequestDTO) throws BusinessException;
 
-    List<Post> getPosts(Long userId, Integer skip, Integer limit);
+    List<Post> getPosts(Long userId, Integer skip, Integer limit, String startDate, String endDate) throws BusinessException;
 
 
     void validatePostCreation(Post post) throws BusinessException;

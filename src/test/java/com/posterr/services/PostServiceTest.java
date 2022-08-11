@@ -182,9 +182,9 @@ class PostServiceTest {
     @DisplayName("Should return 200 when find posts to return")
     void shouldReturnOkWhenFindPosts() {
         List<Post> posts = Arrays.asList(TestUtils.createMockSavedPost(), TestUtils.createMockSavedPost());
-        Mockito.when(this.postRepository.findAllByUserId(Mockito.any(), Mockito.any())).thenReturn(posts);
+        Mockito.when(this.postRepository.findByUserIdAndCreatedAtBetween(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(posts);
 
-        List<Post> foundPosts = Assertions.assertDoesNotThrow(() -> this.serviceUnderTest.getPosts(1L, 0, 10));
+        List<Post> foundPosts = Assertions.assertDoesNotThrow(() -> this.serviceUnderTest.getPosts(1L, 0, 10, null, null));
 
         Assertions.assertFalse(foundPosts.isEmpty());
     }
@@ -193,9 +193,9 @@ class PostServiceTest {
     @DisplayName("Should return 200 when there are no posts to return")
     void shouldReturnOkWhenPostsNotFound() {
         List<Post> posts = new ArrayList<>();
-        Mockito.when(this.postRepository.findAllByUserId(Mockito.any(), Mockito.any())).thenReturn(posts);
+        Mockito.when(this.postRepository.findByUserIdAndCreatedAtBetween(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(posts);
 
-        List<Post> foundPosts = Assertions.assertDoesNotThrow(() -> this.serviceUnderTest.getPosts(1L, 0, 10));
+        List<Post> foundPosts = Assertions.assertDoesNotThrow(() -> this.serviceUnderTest.getPosts(1L, 0, 10, null, null));
 
         Assertions.assertTrue(foundPosts.isEmpty());
     }
@@ -203,13 +203,13 @@ class PostServiceTest {
     @Test
     @DisplayName("Should return bad request when using negative limit")
     void shouldReturnBadRequestWhenUsingNegativeLimit() {
-        Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.getPosts(1L, 0, -10));
+        Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.getPosts(1L, 0, -10, null, null));
     }
 
     @Test
     @DisplayName("Should return bad request when using negative skip")
     void shouldReturnBadRequestWhenUsingNegativeSkip() {
-        Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.getPosts(1L, -5, 10));
+        Assertions.assertThrows(BusinessException.class, () -> this.serviceUnderTest.getPosts(1L, -5, 10, null, null));
     }
 
 }
